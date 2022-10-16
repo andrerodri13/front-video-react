@@ -1,13 +1,21 @@
 import {Box, Button, IconButton, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
-import {useAppSelector} from "../../app/hooks";
-import {selectCategories} from "./categorySlice";
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
+import {deleteCategory, selectCategories} from "./categorySlice";
 import {DataGrid, GridColDef, GridRenderCellParams, GridRowsProp, GridToolbar} from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export const CategoryList = () => {
     //chama o seletor do slice que seleciona a categoria do store do redux
     const categories = useAppSelector(selectCategories);
+    const dispatch = useAppDispatch();
+
+    const componentsProps = {
+        toolbar: {
+            showQuickFilter: true,
+            quickFilterProps: {debounceMs: 500},
+        }
+    };
 
     //Usa as cateforias para criar as linha da table
     const rows: GridRowsProp = categories.map((category) => ({
@@ -40,16 +48,21 @@ export const CategoryList = () => {
         {
             field: 'id',
             headerName: 'Actions',
+            type: "string",
             flex: 1,
             renderCell: renderActionsCell
         },
     ];
 
-    function renderActionsCell(rowData: GridRenderCellParams) {
+    function handlerDeleteCategory(id: string) {
+        dispatch(deleteCategory(id));
+    }
+
+    function renderActionsCell(params: GridRenderCellParams) {
         return (
             <IconButton
                 color="secondary"
-                onClick={() => console.log("Clicked")}
+                onClick={() => handlerDeleteCategory(params.value)}
                 aria-label="delete"
             >
                 <DeleteIcon/>
@@ -76,7 +89,6 @@ export const CategoryList = () => {
         );
     }
 
-
     return (
         <Box maxWidth="lg" sx={{mt: 4, mb: 4}}>
             <Box display="flex" justifyContent="flex-end">
@@ -91,16 +103,13 @@ export const CategoryList = () => {
                 </Button>
             </Box>
 
-
             {/*{categories.map((category) => (
                 <Typography key={category.id}>{category.name}</Typography>
             ))}*/}
 
-            <div style={{height: 300, width: '100%'}}>
+            <Box sx={{display: "flex", height: 600}}>
                 <DataGrid
-                    components={{
-                        Toolbar: GridToolbar
-                    }}
+                    components={{Toolbar: GridToolbar}}
                     rowsPerPageOptions={[2, 20, 50, 100]}
                     disableColumnSelector={true}
                     disableColumnFilter={true}
@@ -109,15 +118,9 @@ export const CategoryList = () => {
                     // checkboxSelection={true}
                     rows={rows}
                     columns={columns}
-                    componentsProps={{
-                        toolbar: {
-                            showQuickFilter: true,
-                            quickFilterProps: {debounceMs: 500},
-                        }
-                    }}
+                    componentsProps={componentsProps}
                 />
-            </div>
-
+            </Box>
         </Box>
     )
         ;
