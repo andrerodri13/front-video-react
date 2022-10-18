@@ -106,7 +106,6 @@ export function CategoriesTable(
 
     const rows = data ? mapDataToGridRows(data) : [];
     const rownCount = data?.meta.total || 0;
-
     return (
         <Box sx={{display: "flex", height: 600}}>
             <DataGrid
@@ -114,20 +113,20 @@ export function CategoriesTable(
                 pagination={true}
                 columns={columns}
                 pageSize={perPage}
-                loading={isFetching}
-                rowCount={rownCount}
                 filterMode={"server"}
+                rowCount={rownCount}
+                loading={isFetching}
                 paginationMode={"server"}
-                componentsProps={componentsProps}
-                disableColumnSelector={true}
-                disableColumnFilter={true}
-                disableDensitySelector={true}
-                disableSelectionOnClick={true}
-                components={{Toolbar: GridToolbar}}
-                onPageChange={handleOnPageChange}
-                onPageSizeChange={handleOnPageSizeChange}
                 checkboxSelection={false}
+                disableColumnFilter={true}
+                disableColumnSelector={true}
+                disableDensitySelector={true}
                 rowsPerPageOptions={rowsPerPage}
+                componentsProps={componentsProps}
+                onPageChange={handleOnPageChange}
+                components={{Toolbar: GridToolbar}}
+                onFilterModelChange={handleFilterChange}
+                onPageSizeChange={handleOnPageSizeChange}
             />
         </Box>
     )
