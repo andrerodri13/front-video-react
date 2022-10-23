@@ -2,6 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store";
 import {apiSlice} from "../api/apiSlice";
 import {CategoryParams, Result, Results} from "../../types/Category";
+import {Category} from "@mui/icons-material";
 
 export interface Category {
     id: string,
@@ -49,16 +50,44 @@ function deleteCategoryMutation(category: Category) {
     }
 }
 
+function createCategoryMutation(category: Category) {
+    return {url: endpointUrl, method: "POST", body: category,}
+}
+
+function updateCategoryMutation(category: Category) {
+    return {
+        url: `${endpointUrl}/${category.id}`,
+        method: "PUT",
+        body: category
+    }
+}
+
+function getCategory({id}: {id: string}) {
+    return `${endpointUrl}/${id}`;
+}
+
 export const categoriesApiSlice = apiSlice.injectEndpoints({
     endpoints: ({query, mutation}) => ({
         getCategories: query<Results, CategoryParams>({
             query: getCategories,
+            providesTags: ["Categories"],
+        }),
+        getCategory: query<Result, {id: string}>({
+            query: getCategory,
             providesTags: ["Categories"]
+        }),
+        createCategory: mutation<Result, Category>({
+            query: createCategoryMutation,
+            invalidatesTags: ["Categories"],
         }),
         deleteCategory: mutation<Result, { id: string }>({
             query: deleteCategoryMutation,
             invalidatesTags: ["Categories"],
-        })
+        }),
+        updateCategory: mutation<Result, Category>({
+            query: updateCategoryMutation,
+            invalidatesTags: ["Categories"]
+        }),
     })
 });
 
@@ -131,5 +160,8 @@ export const {createCategory, updateCategory, deleteCategory} =
 
 export const {
     useGetCategoriesQuery,
-    useDeleteCategoryMutation
+    useDeleteCategoryMutation,
+    useCreateCategoryMutation,
+    useUpdateCategoryMutation,
+    useGetCategoryQuery,
 } = categoriesApiSlice

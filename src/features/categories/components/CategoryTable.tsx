@@ -68,7 +68,7 @@ export function CategoriesTable(
         return categories.map((category) => ({
             id: category.id,
             name: category.name,
-            isActive: category.is_active,
+            is_active: category.is_active,
             created_at: new Date(category.created_at).toLocaleDateString("pt-BR")
         }));
     }

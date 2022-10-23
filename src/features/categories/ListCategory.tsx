@@ -1,4 +1,4 @@
-import {Box, Button} from "@mui/material";
+import {Box, Button, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
 import {useDeleteCategoryMutation, useGetCategoriesQuery} from "./categorySlice";
 import {useSnackbar} from "notistack";
@@ -39,15 +39,20 @@ export const CategoryList = () => {
         await deleteCategory({id})
     }
 
+
     useEffect(() => {
         if (deleteCategoryStatus.isSuccess) {
-            enqueueSnackbar("Category deleted successfully!", {variant: "success"})
+            enqueueSnackbar("Category deleted successfully!", {variant: "success"});
         }
 
         if (deleteCategoryStatus.error) {
-            enqueueSnackbar("Category not deleted", {variant: "error"})
+            enqueueSnackbar("Category not deleted", {variant: "error"});
         }
-    }, [deleteCategoryStatus, enqueueSnackbar])
+
+        if(error) {
+            enqueueSnackbar(`Error fetching categories`, {variant: "error"});
+        }
+    }, [deleteCategoryStatus, enqueueSnackbar, error]);
 
     return (
         <Box maxWidth="lg" sx={{mt: 4, mb: 4}}>
