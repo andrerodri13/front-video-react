@@ -8,11 +8,11 @@ const endpointUrl = "/cast_members";
 export const initialState: CastMember = {
     id: "",
     name: "",
-    type: 0,
-    createdAt: "",
-    updatedAt: "",
-    deletedAt: null,
-}
+    type: 1,
+    created_at: "",
+    updated_at: "",
+    deleted_at: null,
+};
 
 function parseQueryParams(params: CastMemberParams) {
     const query = new URLSearchParams();
@@ -25,7 +25,7 @@ function parseQueryParams(params: CastMemberParams) {
     }
 
     if (params.search) {
-        query.append("search", params.search);
+        query.append("filter", params.search);
     }
 
     if (params.type) {
@@ -54,9 +54,9 @@ function deleteCastMember({id}: { id: string }) {
 
 function createCastMember(castMember: CastMember) {
     return {
-        url: endpointUrl,
         method: "POST",
-        data: castMember,
+        url: endpointUrl,
+        body: castMember,
     };
 }
 
@@ -71,7 +71,7 @@ function updateCastMember(castMember: CastMember) {
     return {
         method: "PUT",
         url: `${endpointUrl}/${castMember.id}`,
-        data: castMember,
+        body: castMember,
     };
 }
 

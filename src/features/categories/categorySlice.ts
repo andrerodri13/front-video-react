@@ -28,7 +28,7 @@ function parseQueryParams(params: CategoryParams) {
     }
 
     if (params.search) {
-        query.append("search", params.search.toString());
+        query.append("filter", params.search.toString());
     }
 
     if (params.isActive) {

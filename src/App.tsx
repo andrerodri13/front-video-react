@@ -3,12 +3,15 @@ import {Box, ThemeProvider} from "@mui/system";
 import {Header} from "./components/Header";
 import {Layout} from "./components/Layout";
 import {appTheme} from "./config/theme";
-import {Routes, Route, Link} from "react-router-dom"
+import {Route, Routes} from "react-router-dom"
 import {CategoryList} from "./features/categories/ListCategory";
 import {CategoryCreate} from "./features/categories/CreateCategory";
 import {CategoryEdit} from "./features/categories/EditCategory";
 import {Typography} from "@mui/material";
 import {SnackbarProvider} from "notistack";
+import {ListCastmembers} from "./features/cast/ListCastmembers";
+import {CreateCastMember} from "./features/cast/CreateCastMember";
+import {EditCastMember} from "./features/cast/EditCastMember";
 
 function App() {
     return (
@@ -31,10 +34,16 @@ function App() {
                     <Header/>
                     <Layout>
                         <Routes>
+                            {/*Category*/}
                             <Route path="/" element={<CategoryList/>}/>
                             <Route path="/categories" element={<CategoryList/>}/>
                             <Route path="/categories/create" element={<CategoryCreate/>}/>
                             <Route path="/categories/edit/:id" element={<CategoryEdit/>}/>
+
+                            {/*Cast Members*/}
+                            <Route path="/cast-members" element={<ListCastmembers/>}/>
+                            <Route path="/cast-members/create" element={<CreateCastMember/>}/>
+                            <Route path="/cast-members/edit/:id" element={<EditCastMember/>}/>
 
                             <Route path="*" element={
                                 <Box sx={{color: "white"}}>
