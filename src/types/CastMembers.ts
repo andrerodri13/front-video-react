@@ -22,7 +22,7 @@ export interface CastMember {
 export interface Links {
     first: string;
     last: string;
-    prev: null;
+    prev: string;
     next: string;
 }
 

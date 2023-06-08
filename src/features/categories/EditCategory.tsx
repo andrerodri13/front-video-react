@@ -8,7 +8,7 @@ import {useSnackbar} from "notistack";
 
 export const CategoryEdit = () => {
 
-    const id = useParams().id || "";
+    const id = useParams().id as string;
     const {data: category, isFetching} = useGetCategoryQuery({id});
     const [updateCategory, status] = useUpdateCategoryMutation();
     const [categoryState, setCategoryState] = useState<Category>({

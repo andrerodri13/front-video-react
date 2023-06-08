@@ -35,9 +35,10 @@ export function CategoryForm(
                                 required
                                 name="name"
                                 label="Name"
-                                value={category.name}
+                                value={category.name || ""}
                                 disabled={isDisabled}
                                 onChange={handleChange}
+                                inputProps={{"data-testid": 'name'}}
                             />
 
                         </FormControl>
@@ -49,9 +50,10 @@ export function CategoryForm(
                                 required
                                 name="description"
                                 label="Description"
-                                value={category.description}
+                                value={category.description || ""}
                                 disabled={isDisabled}
                                 onChange={handleChange}
+                                inputProps={{"data-testid": 'description'}}
                             />
                         </FormControl>
                     </Grid>
@@ -64,8 +66,10 @@ export function CategoryForm(
                                         name="is_active"
                                         color="secondary"
                                         onChange={handleToggle}
-                                        checked={category.is_active}
+                                        checked={category.is_active || false}
                                         inputProps={{"aria-label": "controlled"}}
+                                        data-testid="is_active"
+                                        disabled={isDisabled}
                                     />
                                 }
                                 label="Active"
@@ -82,10 +86,10 @@ export function CategoryForm(
                             <Button
                                 type="submit"
                                 variant="contained"
-                                disabled={isDisabled}
+                                disabled={isDisabled || isLoading}
                                 color="secondary"
                             >
-                                Save
+                                {isLoading ? "Loading..." : "Save"}
                             </Button>
                         </Box>
                     </Grid>

@@ -22,7 +22,7 @@ export interface Category {
 }
 
 export interface Links {
-    prev: null;
+    prev: string;
     last: string;
     next: string;
     first: string;
