@@ -15,7 +15,7 @@ const data = {
 };
 
 export const handlers = [
-    rest.get(`${baseUrl}/categories/undefined`, (_, res, ctx) => {
+    rest.get(`${baseUrl}/categories/`, (_, res, ctx) => {
         return res(ctx.delay(150), ctx.json({data} ));
     }),
     rest.put(`${baseUrl}/categories/1`, (_, res, ctx) => {
