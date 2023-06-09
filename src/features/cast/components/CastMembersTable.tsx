@@ -1,4 +1,4 @@
-import {Results} from "../../../types/Category";
+import {Results} from "../../../types/CastMembers";
 import {DataGrid, GridColDef, GridFilterModel, GridRenderCellParams, GridRowsProp, GridToolbar} from "@mui/x-data-grid";
 import {Box, IconButton, Typography} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -16,7 +16,7 @@ type Props = {
     handleDelete: (id: string) => void;
 }
 
-export function CategoriesTable(
+export function CastMembersTable(
     {
         data,
         perPage,
@@ -43,11 +43,10 @@ export function CategoriesTable(
             renderCell: renderNameCell
         },
         {
-            field: 'is_active',
-            headerName: 'Active',
+            field: 'type',
+            headerName: 'Type',
             flex: 1,
-            type: "boolean",
-            renderCell: renderIsActiveCell
+            renderCell: renderTypeCell
         },
         {
             field: 'id',
@@ -59,12 +58,11 @@ export function CategoriesTable(
     ];
 
     function mapDataToGridRows(data: Results) {
-        const {data: categories} = data;
-        return categories.map((category) => ({
-            id: category.id,
-            name: category.name,
-            is_active: category.is_active,
-            created_at: new Date(category.created_at).toLocaleDateString("pt-BR")
+        const {data: castMembers} = data;
+        return castMembers.map((castMember) => ({
+            id: castMember.id,
+            name: castMember.name,
+            type: castMember.type
         }));
     }
 
@@ -84,7 +82,7 @@ export function CategoriesTable(
     function renderNameCell(rowData: GridRenderCellParams) {
         return (<Link
                 style={{textDecoration: "none"}}
-                to={`/categories/edit/${rowData.id}`}
+                to={`/cast-members/edit/${rowData.id}`}
             >
                 <Typography color="primary">{rowData.value}</Typography>
 
@@ -92,10 +90,10 @@ export function CategoriesTable(
         )
     }
 
-    function renderIsActiveCell(rowData: GridRenderCellParams) {
+    function renderTypeCell(rowData: GridRenderCellParams) {
         return (
-            <Typography color={rowData.value ? "primary" : "secondary"}>
-                {rowData.value ? "Active" : "Inactive"}
+            <Typography color="primary">
+                {rowData.value === 1 ? "Diretor" : "Actor"}
             </Typography>
         );
     }

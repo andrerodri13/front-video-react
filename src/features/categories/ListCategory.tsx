@@ -7,31 +7,40 @@ import {CategoriesTable} from "./components/CategoryTable";
 import {GridFilterModel} from "@mui/x-data-grid";
 
 export const CategoryList = () => {
-    const [page, setPage] = useState(1);
-    const [rowsPerPage] = useState([10, 25, 50, 100]);
-    const [perPage, setPerPage] = useState(10);
-    const [search, setSearch] = useState("");
-
-    const options = {perPage, search, page};
-
+    const {enqueueSnackbar} = useSnackbar();
+    const [options, setOptions] = useState({
+        page: 1,
+        search: "",
+        perPage: 10,
+        rowsPerPage: [10, 20, 30]
+    });
     const {data, isFetching, error} = useGetCategoriesQuery(options);
     const [deleteCategory, deleteCategoryStatus] = useDeleteCategoryMutation();
-    const {enqueueSnackbar} = useSnackbar();
+
+
+    // const [page, setPage] = useState(1);
+    // const [rowsPerPage] = useState([10, 25, 50, 100]);
+    // const [perPage, setPerPage] = useState(10);
+    // const [search, setSearch] = useState("");
+
+    // const options = {perPage, search, page};
+
+
 
     function handleOnPageChange(page: number) {
-        setPage(page + 1);
+        setOptions({...options, page: page + 1});
     }
 
     function handleOnPageSizeChange(perPage: number) {
-        setPerPage(perPage);
+        setOptions({...options, perPage})
     }
 
     function handleOnFilterChange(filterModel: GridFilterModel) {
-        if (filterModel.quickFilterValues?.length) {
-            const search = filterModel.quickFilterValues.join("");
-            return setSearch(search);
+        if (!filterModel.quickFilterValues?.length) {
+            return setOptions({...options, search: ""})
         }
-        return setSearch("");
+        const search = filterModel.quickFilterValues.join("");
+        return setOptions({...options, search});
 
     }
 
@@ -49,7 +58,7 @@ export const CategoryList = () => {
             enqueueSnackbar("Category not deleted", {variant: "error"});
         }
 
-        if(error) {
+        if (error) {
             enqueueSnackbar(`Error fetching categories`, {variant: "error"});
         }
     }, [deleteCategoryStatus, enqueueSnackbar, error]);
@@ -70,8 +79,8 @@ export const CategoryList = () => {
             <CategoriesTable
                 data={data}
                 isFetching={isFetching}
-                perPage={perPage}
-                rowsPerPage={rowsPerPage}
+                perPage={options.perPage}
+                rowsPerPage={options.rowsPerPage}
                 handleDelete={handleDeleteCategory}
                 handleOnPageChange={handleOnPageChange}
                 handleOnPageSizeChange={handleOnPageSizeChange}
