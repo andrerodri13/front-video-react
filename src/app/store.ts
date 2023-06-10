@@ -2,11 +2,13 @@ import {Action, combineReducers, configureStore, PreloadedState, ThunkAction} fr
 import {categoriesApiSlice} from "../features/categories/categorySlice";
 import {apiSlice} from "../features/api/apiSlice";
 import {castMembersApiSlice} from "../features/cast/castMembersSlice";
+import {genreSlice} from '../features/genre/genreSlice'
 
 const rootReducer = combineReducers({
     [apiSlice.reducerPath]: apiSlice.reducer,
     [categoriesApiSlice.reducerPath]: apiSlice.reducer,
     [castMembersApiSlice.reducerPath]: apiSlice.reducer,
+    [genreSlice.reducerPath]: apiSlice.reducer,
 });
 
 export const setupStore = (preloadedState ?: PreloadedState<RootState>) => {

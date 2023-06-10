@@ -12,6 +12,9 @@ import {SnackbarProvider} from "notistack";
 import {ListCastmembers} from "./features/cast/ListCastmembers";
 import {CreateCastMember} from "./features/cast/CreateCastMember";
 import {EditCastMember} from "./features/cast/EditCastMember";
+import {GenreCreate} from "./features/genre/GenreCreate";
+import {GenreEdit} from "./features/genre/GenreEdit";
+import {GenreList} from "./features/genre/GenreList";
 
 function App() {
     return (
@@ -44,6 +47,11 @@ function App() {
                             <Route path="/cast-members" element={<ListCastmembers/>}/>
                             <Route path="/cast-members/create" element={<CreateCastMember/>}/>
                             <Route path="/cast-members/edit/:id" element={<EditCastMember/>}/>
+
+                            {/*Genre*/}
+                            <Route path="genres" element={<GenreList/>}/>
+                            <Route path="genres/create" element={<GenreCreate />}/>
+                            <Route path="genres/edit/:id" element={<GenreEdit/>}/>
 
                             <Route path="*" element={
                                 <Box sx={{color: "white"}}>

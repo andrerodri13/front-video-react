@@ -1,14 +1,9 @@
 import {rest} from "msw";
 import {setupServer} from "msw/node"
-import {CreateCastMember} from "./CreateCastMember";
-import {renderWithProviders, screen, fireEvent, waitFor} from "../../utils/test-utils";
+import {fireEvent, renderWithProviders, screen, waitFor} from "../../utils/test-utils";
 import {baseUrl} from "../api/apiSlice";
-import {EditCastMember} from "./EditCastMember";
-import exp from "constants";
-import {useParams} from "react-router-dom";
-import {wait} from "@testing-library/user-event/utils/misc/wait";
 import {ListCastmembers} from "./ListCastmembers";
-import {castMemberResponse, castMemberResponsePage2} from "./mocks";
+import {castMemberResponse, castMemberResponsePage2} from "../mocks/castMember";
 
 
 export const handlers = [
@@ -81,6 +76,7 @@ describe("ListCastMembers", () => {
 
         const nextButton = screen.getByTestId("KeyboardArrowRightIcon");
         fireEvent.click(nextButton);
+
 
         await waitFor(() => {
             const name = screen.getByText("Teste 2");
