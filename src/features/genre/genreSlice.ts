@@ -1,5 +1,5 @@
 import {apiSlice} from "../api/apiSlice";
-import {Genre, GenreParams, GenrePayload, Genres} from "../../types/genres";
+import {Genre, GenreParams, GenrePayload, Genres, Result} from "../../types/Genres";
 import {Results} from "../../types/Category";
 
 const endpointUrl = "/genres";
@@ -38,8 +38,25 @@ function parseQueryParams(params: GenreParams) {
     return query.toString();
 }
 
+function getGenres({page = 1, perPage = 10, search = ""}) {
+    const params = {page, perPage, search};
+    return `${endpointUrl}?${parseQueryParams(params)}`;
+}
+
+function deleteGenreMutation({id}: { id: string }) {
+    return {url: `${endpointUrl}/${id}`, method: "DELETE"};
+}
+
 function createGenreMutation(genre: GenrePayload) {
-    return { url: endpointUrl, method: "POST", body: genre };
+    return {url: endpointUrl, method: "POST", body: genre};
+}
+
+function getGenre({id}: { id: string }) {
+    return `${endpointUrl}/${id}`;
+}
+
+function updateGenreMutation(genre: GenrePayload) {
+    return {url: getGenre({id: genre.id}), method: "PUT", body: genre,}
 }
 
 function getCategories() {
@@ -51,11 +68,34 @@ export const genreSlice = apiSlice.injectEndpoints({
         getCaTegories: query<Results, void>({
             query: getCategories,
         }),
+        getGenre: query<Result, { id: string }>({
+            query: getGenre,
+            providesTags: ["Genres"]
+        }),
+        updateGenre: mutation<Genre, GenrePayload>({
+            query: updateGenreMutation,
+            invalidatesTags: ["Genres"],
+        }),
         createGenre: mutation<Genre, GenrePayload>({
             query: createGenreMutation,
             invalidatesTags: ["Genres"],
         }),
+        deleteGenre: mutation<Genre, { id: string }>({
+            query: deleteGenreMutation,
+            invalidatesTags: ["Genres"],
+        }),
+        getGenres: query<Genres, GenreParams>({
+            query: getGenres,
+            providesTags: ["Genres"]
+        })
     }),
 });
 
-export const {useCreateGenreMutation, useGetCaTegoriesQuery} = genreSlice;
+export const {
+    useGetGenresQuery,
+    useDeleteGenreMutation,
+    useGetGenreQuery,
+    useGetCaTegoriesQuery,
+    useCreateGenreMutation,
+    useUpdateGenreMutation
+} = genreSlice;

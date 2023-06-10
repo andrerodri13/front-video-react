@@ -1,26 +1,33 @@
+import {useSnackbar} from "notistack";
+import {useParams} from "react-router-dom";
+import {
+    useGetCaTegoriesQuery,
+    initialState as genreInitialState,
+    useGetGenreQuery,
+    useUpdateGenreMutation
+} from "./genreSlice";
+import React, {useEffect, useState} from "react";
+import {Genre} from "../../types/Genres";
 import {Box} from "@mui/system";
 import {Paper, Typography} from "@mui/material";
 import {GenreForm} from "./components/GenreForm";
-import {useSnackbar} from "notistack";
-import {useCreateGenreMutation, initialState as genreInitialState, useGetCaTegoriesQuery} from "./genreSlice";
-import React, {useEffect, useState} from "react";
-import {Genre} from "../../types/Genres";
 
-export const GenreCreate = () => {
+export const GenreEdit = () => {
+    const id = useParams<{ id: string }>().id as string;
+    const {data: genre, isFetching} = useGetGenreQuery({id});
     const {enqueueSnackbar} = useSnackbar();
-    const [createGenre, status] = useCreateGenreMutation();
     const {data: categories} = useGetCaTegoriesQuery();
-    const [genreState, setGenreState] = useState<Genre>(genreInitialState)
+    const [updateGenre, status] = useUpdateGenreMutation();
+    const [genreState, setGenreState] = useState<Genre>(genreInitialState);
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         const {name, value} = event.target;
-        setGenreState({...genreState, [name]: value})
+        setGenreState((state) => ({...state, [name]: value}));
     }
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-
-        await createGenre({
+        await updateGenre({
             id: genreState.id,
             name: genreState.name,
             categories_id: genreState.categories?.map((category) => category.id),
@@ -28,24 +35,30 @@ export const GenreCreate = () => {
     }
 
     useEffect(() => {
-        if (status.isSuccess) {
-            enqueueSnackbar(`Genre created`, {variant: "success"});
+        if (genre) {
+            setGenreState(genre.data);
         }
-        if (status.isError) {
-            enqueueSnackbar(`Error creating genre`, {variant: "error"});
-        }
-    }, [status, enqueueSnackbar, categories])
+    }, [genre])
 
+    useEffect(() => {
+        if (status.isSuccess) {
+            enqueueSnackbar(`Genre updated`, {variant: "success"});
+        }
+
+        if (status.isError) {
+            enqueueSnackbar(`Error updating genre`, {variant: "error"});
+        }
+    }, [status, enqueueSnackbar]);
 
     return (
         <Box>
             <Paper>
                 <Box p={2}>
                     <Box mb={2}>
-                        <Typography variant="h4">Genre Create</Typography>
+                        <Typography variant="h4">Genre Edit</Typography>
                     </Box>
                 </Box>
-                {/*Genre Form*/}
+                Genre Form
                 <GenreForm
                     genre={genreState}
                     categories={categories?.data}

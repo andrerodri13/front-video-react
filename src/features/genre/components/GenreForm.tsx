@@ -3,7 +3,7 @@ import {Category} from "../../../types/Category";
 import {Autocomplete, Button, FormControl, Grid, TextField} from "@mui/material";
 import {Box} from "@mui/system";
 import {Link} from "react-router-dom";
-import {Genre} from "../../../types/genres";
+import {Genre} from "../../../types/Genres";
 
 type Props = {
     genre: Genre,
@@ -67,7 +67,7 @@ export function GenreForm(
                     </Grid>
                     <Grid item xs={12}>
                         <Box display="flex" gap={2}>
-                            <Button variant="contained" component={Link} to="/cast-members">
+                            <Button variant="contained" component={Link} to="/genres">
                                 Back
                             </Button>
 
