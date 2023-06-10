@@ -5,6 +5,7 @@ import {useSnackbar} from "notistack";
 import {useCreateGenreMutation, initialState as genreInitialState, useGetCaTegoriesQuery} from "./genreSlice";
 import React, {useEffect, useState} from "react";
 import {Genre} from "../../types/Genres";
+import {mapGenreToForm} from "./util";
 
 export const GenreCreate = () => {
     const {enqueueSnackbar} = useSnackbar();
@@ -20,11 +21,7 @@ export const GenreCreate = () => {
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        await createGenre({
-            id: genreState.id,
-            name: genreState.name,
-            categories_id: genreState.categories?.map((category) => category.id),
-        });
+        await createGenre(mapGenreToForm(genreState));
     }
 
     useEffect(() => {

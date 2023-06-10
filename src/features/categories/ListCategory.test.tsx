@@ -3,7 +3,7 @@ import {setupServer} from "msw/node";
 import {fireEvent, renderWithProviders, screen, waitFor} from "../../utils/test-utils";
 import {CategoryList} from "./ListCategory";
 import {baseUrl} from "../api/apiSlice";
-import {categoryResponse, categoryResponsePage2} from "./mocks";
+import {categoryResponse, categoryResponsePage2} from "../mocks/category";
 
 
 export const handlers = [

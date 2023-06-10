@@ -21,7 +21,7 @@ export const GenreList = () => {
     const [deleteGenre, deleteStatus] = useDeleteGenreMutation();
 
     function handleOnPageChange(page: number) {
-        setOptions((state) => ({...state, page}));
+        setOptions({ ...options, page: page + 1 });
     }
 
     function handleOnPageSizeChange(perPage: number) {
