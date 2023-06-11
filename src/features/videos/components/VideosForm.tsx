@@ -124,29 +124,6 @@ export function VideosForm(
                                 </FormControl>
                             </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <AutoCompleteFields
-                                name="categories"
-                                label="Categories"
-                                isLoading={isLoading}
-                                isDisabled={false}
-                                values={video.categories}
-                                options={categories}
-                                handleChange={handleChange}
-                            />
-                        </Grid>
-
-                        <Grid item xs={12}>
-                            <AutoCompleteFields
-                                name="genres"
-                                label="Genres"
-                                isLoading={isLoading}
-                                isDisabled={isDisabled}
-                                values={video.genres}
-                                options={genres}
-                                handleChange={handleChange}
-                            />
-                        </Grid>
 
                         <Grid item xs={12}>
                             <AutoCompleteFields
@@ -158,6 +135,39 @@ export function VideosForm(
                                 options={cast_members}
                                 handleChange={handleChange}
                             />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <Grid
+                                container
+                                alignContent={"center"}
+                                justifyContent={"space-between"}
+                                spacing={2}
+                            >
+                                <Grid item xs={5}>
+                                    <AutoCompleteFields
+                                        name="genres"
+                                        label="Genres"
+                                        isLoading={isLoading}
+                                        isDisabled={isDisabled}
+                                        values={video.genres}
+                                        options={genres}
+                                        handleChange={handleChange}
+                                    />
+                                </Grid>
+
+                                <Grid item xs={5}>
+                                    <AutoCompleteFields
+                                        name="categories"
+                                        label="Categories"
+                                        isLoading={isLoading}
+                                        isDisabled={false}
+                                        values={video.categories}
+                                        options={categories}
+                                        handleChange={handleChange}
+                                    />
+                                </Grid>
+                            </Grid>
                         </Grid>
 
 

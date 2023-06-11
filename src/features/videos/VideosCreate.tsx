@@ -7,18 +7,18 @@ import {
     initialState as videoInitialState,
     useCreateVideoMutation,
     useGetAllCastMembersQuery,
-    useGetAllCategoriesQuery,
     useGetAllGenresQuery
 } from "./VideoSlice";
 import {mapVideoToForm} from "./utils";
+import {useUniqueCategories} from "../../hooks/useUniqueCategories";
 
 export const VideosCreate = () => {
     const {enqueueSnackbar} = useSnackbar();
     const [videoState, setVideoState] = useState<Video>(videoInitialState);
     const [createVideo, status] = useCreateVideoMutation();
-    const {data: categories} = useGetAllCategoriesQuery();
     const {data: genres} = useGetAllGenresQuery();
     const {data: cast_members} = useGetAllCastMembersQuery();
+    const [categories] = useUniqueCategories(videoState, setVideoState);
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         const {name, value} = event.target;
@@ -27,7 +27,12 @@ export const VideosCreate = () => {
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        await createVideo(mapVideoToForm(videoState));
+        const {id, ...payload} = mapVideoToForm(videoState);
+        try {
+            await createVideo(payload);
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     useEffect(() => {
@@ -56,7 +61,7 @@ export const VideosCreate = () => {
                     isDisabled={false}
                     handleChange={handleChange}
                     handleSubmit={handleSubmit}
-                    categories={categories?.data}
+                    categories={categories}
                     genres={genres?.data}
                     cast_members={cast_members?.data}
                 />

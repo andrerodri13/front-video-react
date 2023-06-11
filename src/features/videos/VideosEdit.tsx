@@ -12,18 +12,18 @@ import {Video} from "../../types/Videos";
 import {useSnackbar} from "notistack";
 import {VideosForm} from "./components/VideosForm";
 import {mapVideoToForm} from "./utils";
+import {useUniqueCategories} from "../../hooks/useUniqueCategories";
 
 
 export function VideosEdit() {
-    const {enqueueSnackbar} = useSnackbar();
-
     const id = useParams<{ id: string }>().id as string;
-    const {data: video, isFetching} = useGetVideoQuery({id});
-    const [videoState, setVideoState] = useState<Video>(videoInitialState);
-    const [updateVideo, status] = useUpdateVideoMutation();
-    const {data: categories} = useGetAllCategoriesQuery();
+    const {enqueueSnackbar} = useSnackbar();
     const {data: genres} = useGetAllGenresQuery();
     const {data: cast_members} = useGetAllCastMembersQuery();
+    const {data: video, isFetching} = useGetVideoQuery({id});
+    const [updateVideo, status] = useUpdateVideoMutation();
+    const [videoState, setVideoState] = useState<Video>(videoInitialState);
+    const [categories, setCategories] = useUniqueCategories(videoState, setVideoState);
 
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -40,9 +40,10 @@ export function VideosEdit() {
     useEffect(() => {
         if (video) {
             setVideoState(video.data);
+            setCategories(video.data.categories || []);
         }
 
-    }, [video]);
+    }, [video, setCategories]);
 
     useEffect(() => {
         if (status.isSuccess) {
@@ -68,7 +69,7 @@ export function VideosEdit() {
                     handleSubmit={handleSubmit}
                     cast_members={cast_members?.data}
                     genres={genres?.data}
-                    categories={categories?.data}
+                    categories={categories}
                     isDisabled={isFetching}
                     isLoading={isFetching}
                 />
