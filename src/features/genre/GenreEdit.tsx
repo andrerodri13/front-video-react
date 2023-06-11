@@ -55,7 +55,6 @@ export const GenreEdit = () => {
                         <Typography variant="h4">Genre Edit</Typography>
                     </Box>
                 </Box>
-                Genre Form
                 <GenreForm
                     genre={genreState}
                     categories={categories?.data}

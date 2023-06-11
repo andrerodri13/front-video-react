@@ -17,6 +17,7 @@ import {GenreEdit} from "./features/genre/GenreEdit";
 import {GenreList} from "./features/genre/GenreList";
 import {VideosList} from "./features/videos/VideosList";
 import {VideosCreate} from "./features/videos/VideosCreate";
+import {VideosEdit} from "./features/videos/VideosEdit";
 
 function App() {
     return (
@@ -58,7 +59,7 @@ function App() {
                             {/* Videos */}
                             <Route path="/videos" element={<VideosList/>}/>
                             <Route path="/videos/create" element={<VideosCreate/>}/>
-                            <Route path="/videos/edit/:id" element={<Typography>Create Video</Typography>}/>
+                            <Route path="/videos/edit/:id" element={<VideosEdit/>}/>
 
                             <Route path="*" element={
                                 <Box sx={{color: "white"}}>
