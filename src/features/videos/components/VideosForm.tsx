@@ -1,24 +1,14 @@
 import {Box} from "@mui/system";
-import {
-    Autocomplete,
-    Button,
-    FormControl,
-    FormControlLabel,
-    FormLabel,
-    Grid,
-    RadioGroup,
-    TextField,
-    Radio
-} from "@mui/material";
+import {Button, FormControl, FormLabel, Grid, RadioGroup, TextField} from "@mui/material";
 import {Link} from "react-router-dom";
 import React from "react";
 import {Genre} from "../../../types/Genres";
 import {Category} from "../../../types/Category";
-import {Video} from "../../../types/Videos";
+import {FileObject, Video} from "../../../types/Videos";
 import {CastMember} from "../../../types/CastMembers";
 import {AutoCompleteFields} from "../../../components/AutoCompleteFields";
-import {Rating} from "../../../components/Rating";
 import {RatingList} from "../../../components/RatingList";
+import {InputFile} from "../../../components/InputFile";
 
 
 type Props = {
@@ -30,34 +20,9 @@ type Props = {
     isDisabled?: boolean;
     handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
     handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    handleAddFile: ({name, file}: FileObject) => void;
+    handleRemoveFile: (name: string) => void;
 }
-
-const ratingOptions = [
-    {
-        value: "L",
-        label: "L",
-    },
-    {
-        value: "10",
-        label: "10",
-    },
-    {
-        value: "12",
-        label: "12",
-    },
-    {
-        value: "14",
-        label: "14",
-    },
-    {
-        value: "16",
-        label: "16",
-    },
-    {
-        value: "18",
-        label: "18",
-    },
-]
 
 export function VideosForm(
     {
@@ -69,13 +34,47 @@ export function VideosForm(
         isDisabled = false,
         handleSubmit,
         handleChange,
+        handleAddFile,
+        handleRemoveFile,
     }: Props) {
+
+    const handleAddThumbnail = (file: File) => {
+        handleAddFile({name: "thumb_file", file});
+    };
+
+    const handleRemoveThumbnail = () => {
+        handleRemoveFile("thumb_file");
+    };
+
+    const handleAddBanner = (file: File) => {
+        handleAddFile({name: "banner_file", file});
+    };
+
+    const handleAddTrailer = (file: File) => {
+        handleAddFile({name: "trailer_file", file});
+    };
+
+    const handleAddVideo = (file: File) => {
+        handleAddFile({name: "video_file", file});
+    };
+
+    const handleRemoveBanner = () => {
+        handleRemoveFile("banner_file");
+    };
+
+    const handleRemoveTrailer = () => {
+        handleRemoveFile("trailer_file");
+    };
+
+    const handleRemoveVideo = () => {
+        handleRemoveFile("video_file");
+    };
 
 
     return (
         <Box p={2}>
             <form onSubmit={handleSubmit}>
-                <Grid container spacing={3}>
+                <Grid container spacing={4}>
                     <Grid item xs={12} md={6} sx={{"& .MuiTextField-root": {my: 2}}}>
                         <FormControl fullWidth>
                             <TextField
@@ -169,12 +168,13 @@ export function VideosForm(
                                 </Grid>
                             </Grid>
                         </Grid>
-
-
                     </Grid>
+
                     <Grid item xs={12} md={6} sx={{"& .MuiTextField-root": {my: 2}}}>
                         <FormControl>
-                            <FormLabel component="legend">Rating</FormLabel>
+                            <Box mt={2} mb={2}>
+                                <FormLabel component="legend">Rating</FormLabel>
+                            </Box>
                             <RadioGroup
                                 name="rating"
                                 value={video.rating}
@@ -184,26 +184,40 @@ export function VideosForm(
                                 <RatingList isDisabled={isDisabled}/>
                             </RadioGroup>
                         </FormControl>
-                    </Grid>
+                        <FormControl fullWidth>
+                            <FormLabel component="legend">Thumbnail</FormLabel>
+                            <InputFile onAdd={handleAddThumbnail} onRemove={handleRemoveThumbnail}/>
 
+                            <FormLabel component="legend">Banner</FormLabel>
+                            <InputFile onAdd={handleAddBanner} onRemove={handleRemoveBanner}/>
+                        </FormControl>
 
-                    <Grid item xs={12}>
-                        <Box display="flex" gap={2}>
-                            <Button variant="contained" component={Link} to="/videos">
-                                Back
-                            </Button>
+                        <FormControl fullWidth>
+                            <FormLabel component="legend">Videos</FormLabel>
+                            <InputFile onAdd={handleAddVideo} onRemove={handleRemoveVideo}/>
+                            <FormLabel component="legend">Trailer</FormLabel>
+                            <InputFile onAdd={handleAddTrailer} onRemove={handleRemoveTrailer}/>
+                        </FormControl>
 
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                disabled={isDisabled || isLoading}
-                                color="secondary"
-                            >
-                                {isLoading ? "Loading ..." : "Save"}
-                            </Button>
-                        </Box>
                     </Grid>
                 </Grid>
+                <Grid item xs={12}>
+                    <Box display="flex" gap={2}>
+                        <Button variant="contained" component={Link} to="/videos">
+                            Back
+                        </Button>
+
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            disabled={isDisabled || isLoading}
+                            color="secondary"
+                        >
+                            {isLoading ? "Loading ..." : "Save"}
+                        </Button>
+                    </Box>
+                </Grid>
+
             </form>
         </Box>
     );
