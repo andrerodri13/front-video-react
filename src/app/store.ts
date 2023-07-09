@@ -4,6 +4,8 @@ import {apiSlice} from "../features/api/apiSlice";
 import {castMembersApiSlice} from "../features/cast/castMembersSlice";
 import {genreSlice} from '../features/genre/genreSlice'
 import {videosSlice} from '../features/videos/VideoSlice'
+import {uploadReducer} from "../features/uploads/UploadSlice"
+import {uploadQueue} from "../middleware/uploadQueue";
 
 const rootReducer = combineReducers({
     [apiSlice.reducerPath]: apiSlice.reducer,
@@ -11,6 +13,7 @@ const rootReducer = combineReducers({
     [castMembersApiSlice.reducerPath]: apiSlice.reducer,
     [videosSlice.reducerPath]: apiSlice.reducer,
     [genreSlice.reducerPath]: apiSlice.reducer,
+    uploadSlice: uploadReducer,
 });
 
 export const setupStore = (preloadedState ?: PreloadedState<RootState>) => {
@@ -18,7 +21,9 @@ export const setupStore = (preloadedState ?: PreloadedState<RootState>) => {
         reducer: rootReducer,
         preloadedState,
         middleware: (getDefaultMiddleware) =>
-            getDefaultMiddleware().concat(apiSlice.middleware),
+            getDefaultMiddleware({serializableCheck: false})
+                .prepend(uploadQueue.middleware)
+                .concat(apiSlice.middleware),
     })
 };
 
