@@ -4,8 +4,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FileIcon from "@mui/icons-material/FileCopy";
 
 interface Props {
-    onAdd: (files: File | null ) => void;
-    onRemove: (file: File | null) => void;
+    onAdd: (files: File) => void;
+    onRemove: (file: File) => void;
 }
 
 export const InputFile: React.FC<Props> = ({onAdd, onRemove}: Props) => {
@@ -38,13 +38,13 @@ export const InputFile: React.FC<Props> = ({onAdd, onRemove}: Props) => {
                 value={selectedFiles?.name || ""}
                 InputProps={{
                     readOnly: true,
-                    endAdornment: selectedFiles  ? (
+                    endAdornment: selectedFiles ? (
                         <IconButton onClick={handleClear}>
                             <DeleteIcon/>
                         </IconButton>
                     ) : (
                         <IconButton onClick={handleFileInput}>
-                            <FileIcon />
+                            <FileIcon/>
                         </IconButton>
                     )
                 }}

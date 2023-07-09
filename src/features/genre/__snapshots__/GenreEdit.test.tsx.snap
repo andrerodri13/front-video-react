@@ -21,7 +21,6 @@ exports[`GenreEdit should  render correctly 1`] = `
           </h4>
         </div>
       </div>
-      Genre Form
       <div
         class="MuiBox-root css-19midj6"
       >

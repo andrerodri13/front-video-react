@@ -3,12 +3,13 @@ import {Box} from "@mui/system";
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {
-    initialState as videoInitialState, useGetAllCastMembersQuery,
-    useGetAllCategoriesQuery, useGetAllGenresQuery,
+    initialState as videoInitialState,
+    useGetAllCastMembersQuery,
+    useGetAllGenresQuery,
     useGetVideoQuery,
     useUpdateVideoMutation
 } from "./VideoSlice";
-import {Video} from "../../types/Videos";
+import {FileObject, Video} from "../../types/Videos";
 import {useSnackbar} from "notistack";
 import {VideosForm} from "./components/VideosForm";
 import {mapVideoToForm} from "./utils";
@@ -67,6 +68,8 @@ export function VideosEdit() {
                     video={videoState}
                     handleChange={handleChange}
                     handleSubmit={handleSubmit}
+                    handleAddFile={({name, file}: FileObject) => {}}
+                    handleRemoveFile={(name: string) => {}}
                     cast_members={cast_members?.data}
                     genres={genres?.data}
                     categories={categories}

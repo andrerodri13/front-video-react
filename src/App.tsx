@@ -1,11 +1,10 @@
 import * as React from "react";
-import {Box} from "@mui/system";
 import {Layout} from "./components/Layout";
 import {Route, Routes} from "react-router-dom"
 import {CategoryList} from "./features/categories/ListCategory";
 import {CategoryCreate} from "./features/categories/CreateCategory";
 import {CategoryEdit} from "./features/categories/EditCategory";
-import {Typography} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 import {ListCastmembers} from "./features/cast/ListCastmembers";
 import {CreateCastMember} from "./features/cast/CreateCastMember";
 import {EditCastMember} from "./features/cast/EditCastMember";
@@ -15,11 +14,13 @@ import {GenreList} from "./features/genre/GenreList";
 import {VideosList} from "./features/videos/VideosList";
 import {VideosCreate} from "./features/videos/VideosCreate";
 import {VideosEdit} from "./features/videos/VideosEdit";
+import {UploadList} from "./features/uploads/UploadList";
 
 function App() {
     return (
 
         <Layout>
+            <UploadList/>
             <Routes>
                 {/*Category*/}
                 <Route path="/" element={<CategoryList/>}/>

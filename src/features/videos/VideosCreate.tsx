@@ -11,6 +11,9 @@ import {
 } from "./VideoSlice";
 import {mapVideoToForm} from "./utils";
 import {useUniqueCategories} from "../../hooks/useUniqueCategories";
+import {addUpload, removeUpload, setUploadProgress} from "../uploads/UploadSlice";
+import {nanoid} from "nanoid";
+import {useAppDispatch} from "../../app/hooks";
 
 export const VideosCreate = () => {
     const {enqueueSnackbar} = useSnackbar();
@@ -20,6 +23,8 @@ export const VideosCreate = () => {
     const {data: cast_members} = useGetAllCastMembersQuery();
     const [categories] = useUniqueCategories(videoState, setVideoState);
     const [selectedFiles, setSelectedFiles] = useState<FileObject[]>([])
+    const dispatch = useAppDispatch();
+
 
     // console.log("Selected Files", selectedFiles);
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -28,20 +33,29 @@ export const VideosCreate = () => {
     }
 
     function handleAddFile({name, file}: FileObject) {
-       setSelectedFiles([...selectedFiles, {name, file}]);
+        setSelectedFiles([...selectedFiles, {name, file}]);
     }
 
     function handleRemoveFile(name: string) {
         setSelectedFiles(selectedFiles.filter((file) => file.name !== name));
     }
 
+    function handleSubmitUploads(videoId: string) {
+        selectedFiles.forEach(({file, name}) => {
+            const payload = {id: nanoid(), file, videoId, field: name}
+            dispatch(addUpload(payload));
+        });
+
+    }
+
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const {id, ...payload} = mapVideoToForm(videoState);
         try {
-            await createVideo(payload);
+            const {data} = await createVideo(payload).unwrap();
+            await handleSubmitUploads(data.id);
         } catch (e) {
-            console.log(e);
+            enqueueSnackbar(`Error creating Video`, {variant: "error"})
         }
     }
 
